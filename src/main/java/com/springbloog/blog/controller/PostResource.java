@@ -30,4 +30,18 @@ public class PostResource {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
+    @GetMapping("/{id}")
+    private ResponseEntity<PostDto> getPostById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(postService.getPostById(id));
+    }
+    @PutMapping("/{id}")
+    private ResponseEntity<PostDto> updatePostId(@RequestBody PostDto postDto,@PathVariable(name = "id") Long id){
+        return ResponseEntity.ok(postService.updatePost(postDto,id));
+    }
+    @DeleteMapping("/{id}")
+    private ResponseEntity<String> deletePostById(@PathVariable(name="id") Long id){
+        postService.deletePostById(id);
+        return new ResponseEntity<>("Post deleted successfully",HttpStatus.OK);
+    }
+
 }
