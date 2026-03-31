@@ -19,6 +19,10 @@ public class CommentResource {
     public ResponseEntity<CommentDto> createComment(@PathVariable(value = "postId") Long id,
                                           @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
-
+    }
+    @GetMapping("post/{postId}/comments")
+    public ResponseEntity<List<CommentDto>> getComments(
+            @PathVariable(name = "postId",required = true) Long postId){
+      return new ResponseEntity<>(commentService.getCommentByPostId(postId),HttpStatus.OK);
     }
 }
