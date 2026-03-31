@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CommentServiceImpl implements CommentService {
@@ -36,6 +39,15 @@ public class CommentServiceImpl implements CommentService {
         return mapToDto(newComment);
     }
 
+    @Override
+    public List<CommentDto> getCommentByPostId(Long postId) {
+        //retrieve comment by postId
+        List<Comment> comments=commentRepository.findByPostId(postId);
+        var commentsList=comments.stream().map(comment -> mapToDto(comment)).toList();
+        if(null!=commentsList && commentsList.size()>0)
+        return commentsList;
+        else return Collections.emptyList();
+    }
 
 
     private CommentDto mapToDto(Comment comment){
