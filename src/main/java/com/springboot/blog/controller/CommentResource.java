@@ -20,9 +20,12 @@ public class CommentResource {
                                           @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
     }
-    @GetMapping("post/{postId}/comments")
+
+    //api to get comments by postId,commentId, commentId and postId  and all comments.
+    @GetMapping("/post/comments")
     public ResponseEntity<List<CommentDto>> getComments(
-            @PathVariable(name = "postId",required = true) Long postId){
-      return new ResponseEntity<>(commentService.getCommentByPostId(postId),HttpStatus.OK);
+            @RequestParam(name = "postId",required = false) Long postId,
+            @RequestParam(name ="commentId",required = false) Long commentId){
+      return new ResponseEntity<>(commentService.getCommentByPostId(postId,commentId),HttpStatus.OK);
     }
 }
