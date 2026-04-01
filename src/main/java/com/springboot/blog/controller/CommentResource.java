@@ -36,8 +36,13 @@ public class CommentResource {
             @RequestBody CommentDto commentDto) {
         var updateComment=commentService.updateComment(postId,commentId,commentDto);
         return new ResponseEntity<>(updateComment ,HttpStatus.CREATED);
+    }
 
-
-
+    @DeleteMapping("post/comment")
+    public ResponseEntity<String > deleteComment(
+            @RequestParam(name="commentId",required = false) Long commentId,
+            @RequestParam(name="postID",required = false) Long postId){
+        commentService.deleteComment(commentId, postId);
+        return new ResponseEntity<>("comment deleted successfully",HttpStatus.OK);
     }
 }
