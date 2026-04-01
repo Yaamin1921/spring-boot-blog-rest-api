@@ -15,8 +15,8 @@ public class CommentResource {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentDto> createComment(@PathVariable(value = "postId") Long id,
+    @PostMapping("/posts/comments")
+    public ResponseEntity<CommentDto> createComment(@RequestParam(value = "postId") Long id,
                                           @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
     }
@@ -27,5 +27,17 @@ public class CommentResource {
             @RequestParam(name = "postId",required = false) Long postId,
             @RequestParam(name ="commentId",required = false) Long commentId){
       return new ResponseEntity<>(commentService.getCommentByPostId(postId,commentId),HttpStatus.OK);
+    }
+
+    @PutMapping("/post/comment")
+    public ResponseEntity<CommentDto> updateComment(
+            @RequestParam(name="postId",required = false) Long postId,
+            @RequestParam(name="commentId",required = true) Long commentId,
+            @RequestBody CommentDto commentDto) {
+        var updateComment=commentService.updateComment(postId,commentId,commentDto);
+        return new ResponseEntity<>(updateComment ,HttpStatus.CREATED);
+
+
+
     }
 }

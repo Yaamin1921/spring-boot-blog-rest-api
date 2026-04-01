@@ -51,7 +51,6 @@ public class CommentServiceImpl implements CommentService {
             if(!comments.isEmpty() && (!comments.get(0).getPost().getId().equals(postId))){
                 throw  new  BlogAPIException(HttpStatus.BAD_REQUEST,"comment does not belong to given postId");
             }
-            //todo:handle optional with other return type list.
         }else if(null!=commentId){
             comments=commentRepository.findById(commentId).map(List::of).orElse(List.of());
         }else if(null!=postId){
@@ -65,6 +64,26 @@ public class CommentServiceImpl implements CommentService {
         if(!commentsList.isEmpty())  //jpa never return null
         return commentsList;
         else return Collections.emptyList();
+    }
+
+    @Override
+    public CommentDto updateComment(Long postId, Long commentId, CommentDto commentRequest) {
+        var comment=commentRepository.findById(commentId).orElseThrow(()->
+                new ResourceNotFoundException("comment","commentId",commentId));
+        if(null!=postId) {
+            var post = postRepository.findById(postId).orElseThrow(() ->
+                    new ResourceNotFoundException("Post", "id", postId));
+            if(!comment.getPost().getId().equals(post.getId())){
+                throw new BlogAPIException(HttpStatus.BAD_REQUEST,"comment does not belong to post");
+            }
+        }
+
+        comment.setName(commentRequest.getName());
+        comment.setBody(commentRequest.getBody());
+        comment.setEmail(comment.getEmail());
+
+        var updateComment=commentRepository.save(comment);
+        return mapToDto(updateComment);
     }
 
 
