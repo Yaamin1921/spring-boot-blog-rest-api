@@ -52,8 +52,8 @@ public class CommentServiceImpl implements CommentService {
                 throw  new  BlogAPIException(HttpStatus.BAD_REQUEST,"comment does not belong to given postId");
             }
             //todo:handle optional with other return type list.
-        /*}else if(null!=commentId){
-            comments=commentRepository.findById(commentId).;*/
+        }else if(null!=commentId){
+            comments=commentRepository.findById(commentId).map(List::of).orElse(List.of());
         }else if(null!=postId){
             var post=postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","id",postId));
             comments=commentRepository.findByPostId(postId);
