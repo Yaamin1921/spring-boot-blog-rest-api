@@ -15,14 +15,14 @@ public class CommentResource {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/posts/comments")
+    @PostMapping("/post/comment")
     public ResponseEntity<CommentDto> createComment(@RequestParam(value = "postId") Long id,
                                           @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
     }
 
     //api to get comments by postId,commentId, commentId and postId  and all comments.
-    @GetMapping("/post/comments")
+    @GetMapping("/post/comment")
     public ResponseEntity<List<CommentDto>> getComments(
             @RequestParam(name = "postId",required = false) Long postId,
             @RequestParam(name ="commentId",required = false) Long commentId){

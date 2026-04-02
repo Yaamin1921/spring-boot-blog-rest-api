@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/v1/posts")
 public class PostResource {
     //constructor based dependency injection
     private PostService postService;  //here we are making loose coupling by adding interface (not tight coupling via adding class)

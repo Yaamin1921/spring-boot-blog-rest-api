@@ -1,9 +1,13 @@
 package com.springboot.blog.payload;
 
 import com.springboot.blog.entity.Post;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 public class CommentDto {
