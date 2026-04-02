@@ -6,6 +6,8 @@ import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,14 +17,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PostServiceImpl implements PostService {
 
-
+   @Autowired
     private PostRepository postRepository;
-    @Autowired
+   @Autowired
+    private ModelMapper mapper;
+ /*   @Autowired
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-    }
+    }*/
 
     @Override
     public PostDto createPost(PostDto postDto) {
@@ -39,7 +44,7 @@ public class PostServiceImpl implements PostService {
         Pageable pageable= PageRequest.of(pageNo,pageSize, sort);
         var postDto=postRepository.findAll(pageable);
         var posts=postDto.getContent();
-        List<PostDto> content=posts.stream().map(PostServiceImpl::toPostDto).toList();
+        List<PostDto> content=posts.stream().map(post->toPostDto(post)).toList();
 
         PostResponse postResponse=new PostResponse();
         postResponse.setContent(content);
@@ -77,19 +82,25 @@ public class PostServiceImpl implements PostService {
     }
 
     private Post toPost(PostDto postDto){
-        return Post.builder()
+       /* return Post.builder()
                 .title(postDto.getTitle())
                 .description(postDto.getDescription())
                 .content(postDto.getContent())
-                .build();
+                .build();*/
+        Post post=mapper.map(postDto,Post.class);
+        return  post;
     }
-    private static PostDto toPostDto(Post post){
-        return PostDto.builder()
+    private  PostDto toPostDto(Post post){
+       /* return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .description(post.getDescription())
                 .content(post.getContent())
                 .build();
+                */
+                 PostDto postDto=mapper.map(post,PostDto.class);
+                 return postDto;
     }
+
 
 }

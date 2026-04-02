@@ -8,6 +8,7 @@ import com.springboot.blog.repository.CommentRepository;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.CommentService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
     @Autowired
     private PostRepository postRepository;
+    //@Autowired
+    private ModelMapper mapper;    //use to one object to another object...other libraries like mapstruct also avail for same.
 
     /*public CommentServiceImpl(CommentRepository commentRepository){
         this.commentRepository=commentRepository;
@@ -114,19 +117,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDto mapToDto(Comment comment){
-        return CommentDto.builder()
+        /*return CommentDto.builder()
                 .body(comment.getBody())
                 .email(comment.getEmail())
                 .name(comment.getName())
                 .id(comment.getId())
-                .build();
+                .build();*/
+        var commentDto=mapper.map(comment,CommentDto.class);
+        return commentDto;
     }
+
     private Comment mapToEntity(CommentDto commentDto){
-        return Comment.builder()
+       /* return Comment.builder()
                 .body(commentDto.getBody())
                 .email(commentDto.getEmail())
                 .name(commentDto.getName())
                 .id(commentDto.getId())
-                .build();
+                .build();*/
+        var comment= mapper.map(commentDto,Comment.class);
+        return comment;
     }
 }
