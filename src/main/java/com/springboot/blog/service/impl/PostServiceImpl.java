@@ -9,6 +9,7 @@ import com.springboot.blog.service.PostService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,17 +43,17 @@ public class PostServiceImpl implements PostService {
 
 
         Pageable pageable= PageRequest.of(pageNo,pageSize, sort);
-        var postDto=postRepository.findAll(pageable);
-        var posts=postDto.getContent();
+        Page<Post> postList=postRepository.findAll(pageable);
+        List<Post> posts=postList.getContent();
         List<PostDto> content=posts.stream().map(post->toPostDto(post)).toList();
 
         PostResponse postResponse=new PostResponse();
         postResponse.setContent(content);
-        postResponse.setPageNo(postDto.getNumber());
-        postResponse.setPageSize(postDto.getSize());
-        postResponse.setTotalPages(postDto.getTotalPages());
-        postResponse.setTotalElements(postDto.getTotalElements());
-        postResponse.setLast(postDto.isLast());
+        postResponse.setPageNo(postList.getNumber());
+        postResponse.setPageSize(postList.getSize());
+        postResponse.setTotalPages(postList.getTotalPages());
+        postResponse.setTotalElements(postList.getTotalElements());
+        postResponse.setLast(postList.isLast());
 
         return postResponse;
     }
